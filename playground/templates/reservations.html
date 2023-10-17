@@ -1,0 +1,16 @@
+{% extends "app.html" %}
+{% block title %} Reservations {% endblock %}
+{% block content %}
+    <h1><b>Reservation List:</b></h1>
+    <ul>
+        {% if reservations %}
+            {% for reservation in reservations %}
+                <li>
+                    {{ reservation.user }} : {{ reservation.mech }} = {% if reservation.confirmed %}Confirmed{% else %}Not Confirmed{% endif %}
+                </li>
+            {% endfor %}
+        {% else %}
+            <h3>No reservations.</h3>
+        {% endif %}
+    </ul>
+{% endblock %}

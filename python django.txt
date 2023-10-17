@@ -1,0 +1,25 @@
+Instalar Python + pip
+
+https://youtu.be/rHux0gMZ3Eg
+
+En cmd:
+pip install pipenv
+
+Crear proyectpo Django:
+pipenv install django
+pipenv shell
+django-admin startproject (foldername) .
+
+Correr proyecto:
+python manage.py runserver
+
+Crear app:
+python manage.py startapp playground
+(añadir 'playground' INSTALLED_APPS en settings.py)
+
+Crear migraciones:
+python manage.py makemigrations
+python manage.py migrate
+
+Crear usuario administrador:
+python manage.py createsuperuser
