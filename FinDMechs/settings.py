@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'playground',
+    'agenda',
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +56,7 @@ ROOT_URLCONF = 'FinDMechs.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ["templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -100,6 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#AUTHENTICATION_BACKENDS = ['authentication.backend.EmailBackend']
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

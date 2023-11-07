@@ -13,13 +13,19 @@ django-admin startproject (foldername) .
 Correr proyecto:
 python manage.py runserver
 
-Crear app:
-python manage.py startapp playground
-(añadir 'playground' INSTALLED_APPS en settings.py)
-
 Crear migraciones:
 python manage.py makemigrations
 python manage.py migrate
 
 Crear usuario administrador:
 python manage.py createsuperuser
+
+Crear app:
+python manage.py startapp playground
+(añadir 'playground' INSTALLED_APPS en settings.py)
+
+1. models.py
+    - Crear class Name(models.Model)
+2. admin.py
+    - from .models import User
+    - Registrar admin.site.register(Name)
