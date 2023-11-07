@@ -21,6 +21,7 @@ def signup(request):
 
 def signin(request):
     if request.method == "POST":
+        #TODO: login by email instead of username
         #user = authenticate(User.objects.get(email=request.POST['email'].lower()).username, password = request.POST['password'])
         user = authenticate(username = request.POST['email'], password = request.POST['password'])
         if user is not None:
