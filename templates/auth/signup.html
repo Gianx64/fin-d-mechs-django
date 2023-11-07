@@ -12,13 +12,7 @@
     <form action="/signup" method="POST">
         {% csrf_token %}
         <div>
-            <label for="email">Name</label>
-            <div>
-                <input id="name" type="text" name="name" required autocomplete="name" autofocus>
-            </div>
-        </div>
-        <div>
-            <label for="email">Commune</label>
+            <label for="email">First Name:</label>
             <div>
                 <input id="first_name" name="first_name" type="text" required autocomplete="name" autofocus>
             </div>
@@ -32,7 +26,7 @@
             </div>
         </div>
         <div>
-            <label for="email">Address</label>
+            <label for="email">Last Name:</label>
             <div>
                 <input id="last_name" name="last_name" type="text" required autocomplete="name" autofocus>
             </div>

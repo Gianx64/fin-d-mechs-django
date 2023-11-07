@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'agenda',
-    'authentication',
+    'authmod',
 ]
 
 MIDDLEWARE = [
@@ -101,7 +101,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-#AUTHENTICATION_BACKENDS = ['authentication.backend.EmailBackend']
+AUTH_USER_MODEL = "authmod.User"
+#AUTHENTICATION_BACKENDS = ['authmod.backend.EmailBackend']
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

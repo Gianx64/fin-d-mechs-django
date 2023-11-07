@@ -9,8 +9,8 @@
         </button>
     </div>
     {% endfor %}
-    {% if name %}
-    <h1><b>Hello {{name}}!</b></h1>
+    {% if user.first_name %}
+    <h1><b>Hello {{user.first_name}}!</b></h1>
     {% else %}
     <h1><b>Hello World!</b></h1>
     {% endif %}
