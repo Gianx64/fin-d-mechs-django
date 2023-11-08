@@ -3,5 +3,6 @@ from . import views
 
 # URLConf
 urlpatterns = [
-    path('reservations/', views.reservationList),
+    path('', views.appointmentList),
+    path('create', views.createAppointment),
 ]

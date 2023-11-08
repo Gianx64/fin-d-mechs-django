@@ -1,0 +1,16 @@
+{% extends "app.html" %}
+{% block title %} Appointment List {% endblock %}
+{% block content %}
+    <h1><b>Appointment List:</b></h1>
+    <ul>
+        {% if appointments %}
+            {% for appointment in appointments %}
+                <li>
+                    {{ appointment.user }} : {{ appointment.mech }} = {% if appointment.confirmed %}Confirmed{% else %}Not Confirmed{% endif %}
+                </li>
+            {% endfor %}
+        {% else %}
+            <h3>No appointments.</h3>
+        {% endif %}
+    </ul>
+{% endblock %}
