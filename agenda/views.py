@@ -25,6 +25,8 @@ def createAppointment(request):
         if request.POST['date'] >= minDate and request.POST['date'] <= maxDate:
             Appointment.objects.create(
                 user = request.POST['user'],
+                commune = request.POST['commune'],
+                address = request.POST['address'],
                 date = request.POST['date'],
                 time = request.POST['time'],
                 car_brand = request.POST['car_brand'],
