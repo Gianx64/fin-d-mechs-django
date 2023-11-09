@@ -5,4 +5,6 @@ from . import views
 urlpatterns = [
     path('', views.appointmentList),
     path('create', views.createAppointment),
+    path('<id>', views.showAppointment),
+    path('update/<id>/<action>', views.updateAppointment),
 ]

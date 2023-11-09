@@ -5,7 +5,6 @@ from django.contrib.auth.models import AbstractUser, UserManager
 class NewUserManager(UserManager):
     use_in_migrations = True
 
-
     def _create_user(self, email, password, **extra_fields):
         if not email:
             raise ValueError('The given email must be set')
@@ -35,5 +34,8 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     email = models.EmailField(unique=True)
     REQUIRED_FIELDS = [] # removes email from REQUIRED_FIELDS
+    commune = models.CharField(max_length=128)
+    address = models.CharField(max_length=150)
     email_verified = models.BooleanField(default=False)
     mech = models.BooleanField(default=False) #True if mech, False if user
+    mech_verified = models.BooleanField(default=False)

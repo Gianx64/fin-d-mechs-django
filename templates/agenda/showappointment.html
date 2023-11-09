@@ -1,0 +1,45 @@
+{% extends "app.html" %}
+{% block title %} Show Appointment {% endblock %}
+{% block content %}
+    <div>
+        <label for="mech">Mechanic:</label>
+        {{ appointment.mech }}
+    </div>
+    <div>
+        <label for="date">Date:</label>
+        {{ appointment.date }}
+    </div>
+    <div>
+        <label for="time">Time:</label>
+        {{ appointment.time }}
+    </div>
+    <div>
+        <label for="car_brand">Car Brand:</label>
+        {{ appointment.car_brand }}
+    </div>
+    <div>
+        <label for="car_model">Car Model:</label>
+        {{ appointment.car_model }}
+    </div>
+    <div>
+        <label for="description">Description:</label>
+        {{ appointment.description }}
+    </div>
+    <div>
+        <label for="description">Status:</label>
+        {% if appointment.completed %}Completed{% elif appointment.canceled %}Canceled{% elif appointment.confirmed %}Confirmed{% else %}Not Confirmed{% endif %}
+    </div>
+    <br>
+    {% if user.mech_verified %}
+        {% if appointment.canceled == False %}
+            <div class="btn btn-sm">
+                <a href="/agenda/update/{{appointment.id}}/1"><i class="fa fa-edit"></i>Confirm</a>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="btn btn-sm">
+            <a class="dropdown-item" onclick="confirm('Cancel Appointment id {{appointment.id}}? \nCanceled Appointments cannot be recovered!')||event.stopImmediatePropagation()"
+            href="/agenda/update/{{appointment.id}}/2"><i class="fa fa-trash"></i>Cancel</a>
+        </div>
+    {% endif %}
+{% endblock %}
