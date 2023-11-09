@@ -39,7 +39,7 @@
     </div>
     <br>
     {% if user.mech_verified %}
-        {% if appointment.canceled == False %}
+        {% if appointment.canceled == False and appointment.confirmed == False %}
             <div class="btn btn-sm btn-success">
                 <a class="dropdown-item" href="/agenda/update/{{appointment.id}}/1">Confirm</a>
             </div>

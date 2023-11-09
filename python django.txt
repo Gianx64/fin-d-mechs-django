@@ -26,6 +26,12 @@ python manage.py startapp playground
 
 1. models.py
     - Crear class Name(models.Model)
-2. admin.py
-    - from .models import User
+2. admin.py (para que salga en el panel de Administración)
+    - from .models import Name
     - Registrar admin.site.register(Name)
+
+
+TODO:
+Agenda para showappointments
+Implementar correos
+Poner diseño de fondo
