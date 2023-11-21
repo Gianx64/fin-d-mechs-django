@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+#bv0f=1nbjw9q#sbf=ne@s0-q8)(^kr!omn5$q7nhda=&kh$)'
+SECRET_KEY = '05u!npr_b-004+x3^f_n9!j5%wp5l@71z3f14-w1jah2p+8ey(3o0k=x5okk82you=0xx-@3^fbh0#-@1q9zh*+u6s&r$&ir2@4f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -50,6 +50,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = False
 
 ROOT_URLCONF = 'FinDMechs.urls'
 
