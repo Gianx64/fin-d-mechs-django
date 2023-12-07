@@ -1,63 +1,71 @@
 {% extends "app.html" %}
 {% block title %} Appointment List {% endblock %}
 {% block content %}
-    {% for message in messages %}
-    <div>
-        <strong>Message:</strong> {{ message }}
-        <button type="button" aria-label="Close" class="Close" data-dismiss="alert">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    {% endfor %}
-    <div class="card">
-        <div class="card-header">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div class="float-left">
-                    <h4><i class="fab fa-laravel text-info"></i>Appointment List</h4>
-                </div>
-                {% if user.mech == False %}
-                    <div class="btn btn-sm btn-info">
-                        <a href="/agenda/create">Add Appointment</a>
-                    </div>
-                {% endif %}
-            </div>
+    <div class="container">
+        {% for message in messages %}
+        <div>
+            <strong>Message:</strong> {{ message }}
+            <button type="button" aria-label="Close" class="Close" data-dismiss="alert">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-        <div class="card-body">
-            <div class="table-responsive" style="height:75vh">
-                <table class="table table-bordered table-sm">
-                    <thead class="thead">
-                        <tr>
-                            <td>ID</td> 
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Car Brand</th>
-                            <th>Car Model</th>
-                            <th>Mech</th>
-                            <th>Status</th>
-                            <td>ACTIONS</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if appointments %}
-                            {% for appointment in appointments %}
-                                <tr>
-                                    <td><a href="/agenda/{{appointment.id}}">{{ appointment.id }}</a></td>
-                                    <td>{{ appointment.date }}</td>
-                                    <td>{{ appointment.time }}</td>
-                                    <td>{{ appointment.car_brand }}</td>
-                                    <td>{{ appointment.car_model }}</td>
-                                    <td>{{ appointment.mech }}</td>
-                                    <td>{% if appointment.completed %}Completed{% elif appointment.canceled %}Canceled{% elif appointment.confirmed %}Confirmed{% else %}Not Confirmed{% endif %}</td>
-                                    <td width="90">
-                                        <a class="dropdown-item" href="/agenda/{{appointment.id}}"><i class="fa fa-file-text"></i>Show</a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        {% else %}
-                            <tr><td class="text-center" colspan="100%">No data found</td></tr>
-                        {% endif %}
-                    </tbody>
-                </table>
+        {% endfor %}
+        <div class="card">
+            <div class="card-header">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="float-left">
+                        <h4><i class="fab fa-laravel text-info"></i>Appointment List</h4>
+                    </div>
+                    {% if user.mech == False %}
+                        <div class="btn btn-sm btn-info">
+                            <a href="/agenda/create">Add Appointment</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive" style="height:75vh">
+                    <table class="table table-bordered table-sm">
+                        <thead class="thead">
+                            <tr>
+                                <td>ID</td> 
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Car Brand</th>
+                                <th>Car Model</th>
+                                <th>Mech</th>
+                                <th>Status</th>
+                                <td>ACTIONS</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if appointments %}
+                                {% for appointment in appointments %}
+                                    <tr>
+                                        <td><a href="/agenda/{{appointment.id}}">{{ appointment.id }}</a></td>
+                                        <td>{{ appointment.date }}</td>
+                                        <td>{{ appointment.time }}</td>
+                                        <td>{{ appointment.car_brand }}</td>
+                                        <td>{{ appointment.car_model }}</td>
+                                        <td>{{ appointment.mech }}</td>
+                                        <td>{% if appointment.completed %}Completed{% elif appointment.canceled %}Canceled{% elif appointment.confirmed %}Confirmed{% else %}Not Confirmed{% endif %}</td>
+                                        <td width="90">
+                                            <a class="dropdown-item" href="/agenda/{{appointment.id}}"><i class="fa fa-file-text"></i>Show</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                {% if user.mech %}
+                                    {% if not user.mech_verified %}
+                                        <tr><td class="text-center" colspan="100%">You are not a verified mech, please contact support to know status.</td></tr>
+                                    {% endif %}
+                                {% else %}
+                                    <tr><td class="text-center" colspan="100%">No data found. Try making your first appointment with the "Add Appointment" button!</td></tr>
+                                {% endif %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -1,18 +1,31 @@
 {% extends "app.html" %}
+{% load static %}
 {% block title %} Home Page {% endblock %}
 {% block content %}
-    {% for message in messages %}
-    <div>
-        <strong>Message:</strong> {{ message }}
-        <button type="button" aria-label="Close" class="Close" data-dismiss="alert">
-            <span aria-hidden="true">&times;</span>
-        </button>
+    <div style="background-image: url('static/images/fin-d-mechs.png');
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        opacity: 1;
+        position:fixed;
+        height:100%;
+        width:100%;">
+        <div class="container">
+            {% for message in messages %}
+            <img background="{{ STATIC_URL }}images/fin-d-mechs.png" no-repeat;>
+            <div>
+                <strong>Message:</strong> {{ message }}
+                <button type="button" aria-label="Close" class="Close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% if user.first_name %}
+            <h1><b>Hello {{user.first_name}}. Welcome to Fin-D-Mechs!</b></h1>
+            {% else %}
+            <h1><b>Welcome to Fin-D-Mechs!</b></h1>
+            {% endif %}
+            <img src="{% static 'images/fin-d-mechs.png' %}" height="250" alt="Fin-D-Mechs">
+        </div>
     </div>
-    {% endfor %}
-    {% if user.first_name %}
-    <h1><b>Hello {{user.first_name}}. Welcome to Fin-D-Mechs!</b></h1>
-    {% else %}
-    <h1><b>Welcome to Fin-D-Mechs!</b></h1>
-    {% endif %}
-    <img src="fin-d-mechs.png" alt="Fin-D-Mechs">
 {% endblock %}

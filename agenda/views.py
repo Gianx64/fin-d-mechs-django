@@ -13,7 +13,11 @@ def appointmentList(request):
 
 def showAppointment(request, id):
     appointment = Appointment.objects.get(id = id)
-    return render(request, 'agenda/showappointment.html', {'appointment' : appointment})
+    if request.user.mech_verified:
+        data = Appointment.objects.all().filter(mech = request.user, date = appointment.date)
+    else:
+        data = Appointment.objects.all().filter(user = request.user, mech = appointment.mech)
+    return render(request, 'agenda/showappointment.html', {'appointment' : appointment, 'appointments' : data})
 
 def createAppointment(request):
     today = datetime.now()
@@ -23,19 +27,22 @@ def createAppointment(request):
 
     if request.method == 'POST':
         if request.POST['date'] >= minDate and request.POST['date'] <= maxDate:
-            Appointment.objects.create(
-                user = request.POST['user'],
-                commune = request.POST['commune'],
-                address = request.POST['address'],
-                date = request.POST['date'],
-                time = request.POST['time'],
-                car_brand = request.POST['car_brand'],
-                car_model = request.POST['car_model'],
-                description = request.POST['description'],
-                mech = request.POST['mech'],
-            )
-            messages.success(request, "Appointment Saved!")
-            return redirect('/agenda')
+            if not Appointment.objects.all().filter(date = request.POST['date']):
+                Appointment.objects.create(
+                    user = request.POST['user'],
+                    commune = request.POST['commune'],
+                    address = request.POST['address'],
+                    date = request.POST['date'],
+                    time = request.POST['time'],
+                    car_brand = request.POST['car_brand'],
+                    car_model = request.POST['car_model'],
+                    description = request.POST['description'],
+                    mech = request.POST['mech'],
+                )
+                messages.success(request, "Appointment Saved!")
+                return redirect('/agenda')
+            else:
+                messages.success(request, "You already made an appointment for this day! You can cancel said appointment to make another one.")
         else:
             messages.success(request, "The Selected Date Isn't In The Correct Time Period!")
 
