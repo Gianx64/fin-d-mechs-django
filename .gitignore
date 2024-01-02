@@ -1,4 +1,8 @@
 /agenda/__pycache__
+/agenda/migrations/*
+!/agenda/migrations/__init__.py
 /authmod/__pycache__
+/authmod/migrations/*
+!/authmod/migrations/__init__.py
 /FinDMechs/__pycache__
 db.sqlite3

@@ -1,7 +1,11 @@
 ## TODO:
-- Agenda para showappointments
+- Random mech
+- Opciones de servicio
+1. Atención en taller
+2. Adención a domicilio
+3. Pickup
+- Agenda en el home page
 - Implementar correos
-- Poner diseño de fondo
 
 Instalar Python + pip
 https://youtu.be/rHux0gMZ3Eg
