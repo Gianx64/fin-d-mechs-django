@@ -1,0 +1,27 @@
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelModalLabel">Cancel Appointment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/agenda/cancel/{{appointment.id}}" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <input id="user" name="user" type="email" value="{{user.email}}" hidden>
+                    <div>
+                        <label for="usercomment">Cancel reason:</label>
+                        <div>
+                            <input id="usercomment" name="usercomment" type="text" required autofocus>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button onclick="return confirm('Cancel Appointment id {{appointment.id}}? \nCanceled Appointments cannot be recovered!')"
+                    type="submit" class="btn btn-danger">Cancel Appointment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
