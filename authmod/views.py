@@ -20,7 +20,7 @@ def profile(request):
         else:
             data.first_name = request.POST['first_name']
             data.last_name = request.POST['last_name']
-            data.commune = request.POST['commune']
+            data.city = request.POST['city']
             data.address = request.POST['address']
             data.mech = True if request.POST.get('mech') == 'on' else False
             data.save()
@@ -38,7 +38,7 @@ def signup(request):
             data = User.objects.create_user(email = request.POST['email'], password = request.POST['password'])
             data.first_name = request.POST['first_name']
             data.last_name = request.POST['last_name']
-            data.commune = request.POST['commune']
+            data.city = request.POST['city']
             data.address = request.POST['address']
             data.mech = True if request.POST.get('mech') == 'on' else False
             data.save()

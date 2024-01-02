@@ -34,7 +34,7 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     email = models.EmailField(unique=True)
     REQUIRED_FIELDS = [] # removes email from REQUIRED_FIELDS
-    commune = models.CharField(max_length=128)
+    city = models.CharField(max_length=128)
     address = models.CharField(max_length=150)
     email_verified = models.BooleanField(default=False)
     mech = models.BooleanField(default=False) #True if mech, False if user
