@@ -1,10 +1,10 @@
 {% extends "app.html" %}
 {% block title %} Show Appointment {% endblock %}
 {% block content %}
-    <div class="container"><br>
+    <div class="container">
         <div class="row">
-            <div class="col">
-                <div class="card">
+            <div class="col-auto">
+                <div class="card mt-4">
                     <div class="card-header">
                         <h2>Appointment details:</h2>
                     </div>
@@ -48,7 +48,7 @@
                             </tr>
                         </table-->
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col">
                                 <label for="date">Date:</label><br>
                                 <label for="time">Time:</label><br>
                                 <label for="city">City:</label><br>
@@ -73,22 +73,48 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        {% if user.mech_verified %}
-                            {% if appointment.canceled == False and appointment.confirmed == False %}
-                                <button type="button" class="btn btn-success" style="margin-right:5vw;" onclick="location.href='/agenda/update/{{appointment.id}}/1'">Confirm</button>
+                        <div class="row">
+                            {% include 'agenda/appointmentmodals.html' %}
+                            {% if user.mech_verified %}
+                                {% if appointment.canceled == False and appointment.confirmed == False %}
+                                    <div class="col">
+                                        <form action="/agenda/update/{{appointment.id}}" method="POST">
+                                            {% csrf_token %}
+                                            <input id="user" name="user" type="email" value="{{user.email}}" hidden>
+                                            <input id="action" name="action" type="number" value="1" hidden>
+                                            <button onclick="return confirm('Are you sure you want to mark this appointment as confirmed?\nThis cannot be undone!')"
+                                            type="submit" class="btn btn-success">Confirm Appointment</button>
+                                        </form>
+                                    </div>
+                                {% endif %}
                             {% endif %}
-                        {% else %}
-                            {% if appointment.canceled == False %}
-                                {% include 'agenda/cancelappointment.html' %}
-                                <button type="button" class="btn btn-danger" style="margin-right:5vw;" data-bs-toggle="modal" data-bs-target="#cancelModal">Cancel Appointment</button>
+                            {% if appointment.canceled == False and appointment.completed == False %}
+                                <div class="col">
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">Cancel Appointment</button>
+                                </div>
                             {% endif %}
-                        {% endif %}
-                        <button type="button" class="btn btn-primary" onclick="location.href='/agenda'">Go Back</button>
+                            {% if confirmable %}
+                                {% if appointment.canceled == False and appointment.confirmed == True and appointment.completed == False %}
+                                    <div class="col">
+                                        <form action="/agenda/update/{{appointment.id}}" method="POST">
+                                            {% csrf_token %}
+                                            <input id="user" name="user" type="email" value="{{user.email}}" hidden>
+                                            <input id="action" name="action" type="number" value="3" hidden>
+                                            <button onclick="return confirm('Are you sure you want to mark this appointment as completed?\nThis cannot be undone!')"
+                                            type="submit" class="btn btn-success">Mark as Completed</button>
+                                        </form>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                            <div class="col">
+                                <button type="button" class="btn btn-primary" onclick="location.href='/agenda'">Go Back</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="card">
+            <div class="col-auto">
+                <div class="card mt-4">
                     <div class="card-header">
                         <div>
                             {% if user.mech_verified %}
@@ -105,7 +131,7 @@
                                     <td>ID</td> 
                                     <th>Date</th>
                                     <th>Time</th>
-                                    <th>Commune</th>
+                                    <th>City</th>
                                     <th>Address</th>
                                     <th>Status</th>
                                 </tr>
@@ -117,7 +143,7 @@
                                             <td><a href="/agenda/{{appointment.id}}">{{ appointment.id }}</a></td>
                                             <td>{{ appointment.date }}</td>
                                             <td>{{ appointment.time }}</td>
-                                            <td>{{ appointment.commune }}</td>
+                                            <td>{{ appointment.city }}</td>
                                             <td>{{ appointment.address }}</td>
                                             <td>{% if appointment.completed %}Completed{% elif appointment.canceled %}Canceled{% elif appointment.confirmed %}Confirmed{% else %}Not Confirmed{% endif %}</td>
                                         </tr>
@@ -131,59 +157,61 @@
                 </div>
             </div>
         </div>
-        <br>
-        <div class="row">
-            <div class="col">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Appointment timeline:</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-2">
-                                {% if appointment.confirmed %}
+        {% if appointment.confirmed %}
+            <div class="row">
+                <div class="col">
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h2>Appointment timeline:</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
                                     <label for="confirmtime">Confirm Time:</label><br>
-                                {% endif %}
-                                {% if appointment.canceled %}
-                                    <label for="canceledby">Canceled By:</label><br>
-                                    <label for="canceltime">Cancel Time:</label><br>
-                                {% endif %}
-                                {% if appointment.completed %}
-                                    <label for="completedtime">Completed Time:</label><br>
-                                {% endif %}
-                                {% if appointment.usercomment %}
-                                    <br><label for="usercommenttime">User Comment Time:</label><br>
-                                    <label for="usercomment">User Comment:</label><br>
-                                {% endif %}
-                                {% if appointment.mechcomment %}
-                                    <br><label for="mechcommenttime">Mech Comment Time:</label><br>
-                                    <label for="mechcomment">Mech Comment:</label><br>
-                                {% endif %}
-                            </div>
-                            <div class="col">
-                                {% if appointment.confirmed %}
+                                    {% if appointment.canceled %}
+                                        <label for="canceledby">Canceled By:</label><br>
+                                        <label for="canceltime">Cancel Time:</label><br>
+                                    {% endif %}
+                                    {% if appointment.completed %}
+                                        <label for="completedtime">Completed Time:</label><br>
+                                    {% endif %}
+                                    {% if appointment.usercomment %}
+                                        <br><label for="usercommenttime">User Comment Time:</label><br>
+                                        <label for="usercomment">User Comment:</label><br>
+                                    {% endif %}
+                                    {% if appointment.mechcomment %}
+                                        <br><label for="mechcommenttime">Mech Comment Time:</label><br>
+                                        <label for="mechcomment">Mech Comment:</label><br>
+                                    {% endif %}
+                                </div>
+                                <div class="col">
                                     {{ appointment.confirmtime }}<br>
-                                {% endif %}
-                                {% if appointment.canceled %}
-                                    {{ appointment.canceledby }}<br>
-                                    {{ appointment.canceltime }}<br>
-                                {% endif %}
-                                {% if appointment.completed %}
-                                    {{ appointment.completedtime }}<br>
-                                {% endif %}
-                                {% if appointment.usercomment %}
-                                    <br>{{ appointment.usercommenttime }}<br>
-                                    {{ appointment.usercomment }}<br>
-                                {% endif %}
-                                {% if appointment.mechcomment %}
-                                    <br>{{ appointment.mechcommenttime }}<br>
-                                    {{ appointment.mechcomment }}<br>
-                                {% endif %}
+                                    {% if appointment.canceled %}
+                                        {{ appointment.canceledby }}<br>
+                                        {{ appointment.canceltime }}<br>
+                                    {% endif %}
+                                    {% if appointment.completed %}
+                                        {{ appointment.completedtime }}<br>
+                                    {% endif %}
+                                    {% if appointment.usercomment %}
+                                        <br>{{ appointment.usercommenttime }}<br>
+                                        {{ appointment.usercomment }}<br>
+                                    {% endif %}
+                                    {% if appointment.mechcomment %}
+                                        <br>{{ appointment.mechcommenttime }}<br>
+                                        {{ appointment.mechcomment }}<br>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
+                        {% if commentable %}
+                            <div class="card-footer">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#commentModal">Add Comment</button>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
     </div>
 {% endblock %}

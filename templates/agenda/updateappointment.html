@@ -1,7 +1,7 @@
 {% extends "app.html" %}
 {% block title %} Edit Appointment {% endblock %}
 {% block content %}
-    <div class="container">
+    <div class="container mt-4">
         <form action="/agenda/update" method="POST">
             {% csrf_token %}
             <input id="user" name="user" type="email" value="{{user.email}}" hidden>
@@ -44,7 +44,7 @@
             <br>
             <div>
                 <div>
-                    <button type="submit">Edit Appointment</button>
+                    <button type="submit" class="btn btn-primary">Edit Appointment</button>
                 </div>
             </div>
         </form>

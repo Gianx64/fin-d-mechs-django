@@ -1,7 +1,7 @@
 {% extends "app.html" %}
 {% block title %} Make Appointment {% endblock %}
 {% block content %}
-    <div class="container">
+    <div class="container mt-4">
         {% for message in messages %}
         <div>
             <strong>Message:</strong> {{ message }}
@@ -12,9 +12,6 @@
         {% endfor %}
         <form action="/agenda/create" method="POST">
             {% csrf_token %}
-            <input id="user" name="user" type="email" value="{{user.email}}" hidden>
-            <input id="city" name="city" type="text" value="{{user.city}}" hidden>
-            <input id="address" name="address" type="text" value="{{user.address}}" hidden>
             <div>
                 <label for="mech">Mechanic:</label>
                 <div>
@@ -28,13 +25,13 @@
             <div>
                 <label for="date">Date:</label>
                 <div>
-                    <input id="date" name="date" type="date" required>
+                    <input id="date" name="date" type="date" min="{{minDate}}" max="{{maxDate}}" required>
                 </div>
             </div>
             <div>
                 <label for="time">Time:</label>
                 <div>
-                    <input id="time" name="time" type="time" required>
+                    <input id="time" name="time" type="time" min="09:00:00" max="18:00:00" required>
                 </div>
             </div>
             <div>
@@ -58,7 +55,7 @@
             <br>
             <div>
                 <div>
-                    <button type="submit">Make Appointment</button>
+                    <button type="submit" class="btn btn-primary">Make Appointment</button>
                 </div>
             </div>
         </form>

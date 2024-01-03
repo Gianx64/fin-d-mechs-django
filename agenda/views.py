@@ -1,37 +1,46 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Appointment
+from authmod.models import User
 from datetime import datetime, timedelta
 
 # Create your views here.
 def appointmentList(request):
     if request.user.mech_verified:
-        data = Appointment.objects.all().filter(mech = request.user)
+        data = Appointment.objects.all().filter(mech = request.user).order_by('-id')
     else:
-        data = Appointment.objects.all().filter(user = request.user)
+        data = Appointment.objects.all().filter(user = request.user).order_by('-id')
     return render(request, 'agenda/appointments.html', {'appointments' : data})
 
 def showAppointment(request, id):
     appointment = Appointment.objects.get(id = id)
+    confirmable = True if ( datetime.now().date() <= appointment.date and datetime.now().time() > appointment.time ) else False
+    if request.user.mech_verified and ( appointment.completed or appointment.canceled ) and appointment.mechcomment == None:
+        commentable = True
+    elif not request.user.mech and appointment.completed and appointment.usercomment == None:
+        commentable = True
+    else:
+        commentable = False
     if request.user.mech_verified:
         data = Appointment.objects.all().filter(mech = request.user, date = appointment.date)
     else:
         data = Appointment.objects.all().filter(user = request.user, mech = appointment.mech)
-    return render(request, 'agenda/showappointment.html', {'appointment' : appointment, 'appointments' : data})
+    return render(request, 'agenda/showappointment.html', {'appointment' : appointment, 'appointments' : data, 'confirmable': confirmable, 'commentable': commentable})
 
 def createAppointment(request):
-    today = datetime.now()
-    minDate = today.strftime('%Y-%m-%d')
-    deltatime = today + timedelta(days=21)
+    tomorrow = datetime.now() + timedelta(days=1)
+    minDate = tomorrow.strftime('%Y-%m-%d')
+    deltatime = tomorrow + timedelta(days=21)
     maxDate = deltatime.strftime('%Y-%m-%d')
+    mechs = User.objects.all().filter(mech_verified = True)
 
     if request.method == 'POST':
         if request.POST['date'] >= minDate and request.POST['date'] <= maxDate:
             if not Appointment.objects.all().filter(date = request.POST['date']):
                 Appointment.objects.create(
-                    user = request.POST['user'],
-                    commune = request.POST['commune'],
-                    address = request.POST['address'],
+                    user = request.user.email,
+                    city = request.user.city,
+                    address = request.user.address,
                     date = request.POST['date'],
                     time = request.POST['time'],
                     car_brand = request.POST['car_brand'],
@@ -44,32 +53,54 @@ def createAppointment(request):
             else:
                 messages.success(request, "You already made an appointment for this day! You can cancel said appointment to make another one.")
         else:
-            messages.success(request, "The Selected Date Isn't In The Correct Time Period!")
+            messages.success(request, "The time period is from tomorrow to the next three weeks!")
 
-    return render(request, 'agenda/createappointment.html', {'maxDate': maxDate})
+    return render(request, 'agenda/createappointment.html', {'minDate': minDate, 'maxDate': maxDate, 'mechs': mechs})
 
-def updateAppointment(request, id, action):
-    appointment = Appointment.objects.get(id = id)
-    if action == '1':
-        if appointment.completed:
-            messages.error(request, "Error. Appointment is completed.")
-        elif appointment.canceled:
-            messages.error(request, "Error. Appointment is cancelled.")
-        else:
-            appointment.confirmed = True
-            messages.success(request, "Appointment Confirmed!")
-    elif action == '2':
-        if appointment.completed:
-            messages.error(request, "Error. Appointment is completed.")
-        elif appointment.canceled:
-            messages.error(request, "Error. Appointment is already cancelled!")
-        else:
-            appointment.canceled = True
-            messages.success(request, "Appointment Canceled!")
-    elif action == '3':
-        appointment.completed = True
-        messages.success(request, "Appointment Completed!")
-    appointment.save()
+def updateAppointment(request, id):
+    if request.method == 'POST':
+        appointment = Appointment.objects.get(id = id)
+        if request.POST['action'] == '1' and appointment.mech == request.user.email:  #Confirm appointment
+            if appointment.completed:
+                messages.error(request, "Error. Appointment is completed.")
+            elif appointment.canceled:
+                messages.error(request, "Error. Appointment is cancelled.")
+            else:
+                appointment.confirmed = True
+                appointment.confirmtime = datetime.now()
+                messages.success(request, "Appointment Confirmed!")
+        elif request.POST['action'] == '2' and (appointment.mech == request.user.email or appointment.user == request.user.email):    #Cancel appointment
+            if appointment.completed:
+                messages.error(request, "Error. Appointment is completed.")
+            elif appointment.canceled:
+                messages.error(request, "Error. Appointment is already cancelled!")
+            else:
+                appointment.canceled = True
+                appointment.canceledby = request.user.email
+                appointment.canceltime = datetime.now()
+                if request.user.mech_verified:
+                    appointment.mechcommenttime = datetime.now()
+                    appointment.mechcomment = request.POST['reason']
+                elif not request.user.mech:
+                    appointment.usercommenttime = datetime.now()
+                    appointment.usercomment = request.POST['reason']
+                messages.success(request, "Appointment canceled!")
+        elif request.POST['action'] == '3' and (appointment.mech == request.user.email or appointment.user == request.user.email):    #Mark appointment as completed
+            appointment.completed = True
+            appointment.completedtime = datetime.now()
+            messages.success(request, "Appointment completed!")
+        elif request.POST['action'] == '4' and (appointment.mech == request.user.email or appointment.user == request.user.email):    #Comment appointment
+            if appointment.user == request.user.email:
+                appointment.usercommenttime = datetime.now()
+                appointment.usercomment = request.POST['comment']
+                messages.success(request, "Comment posted!")
+            elif appointment.mech == request.user.email:
+                appointment.mechcommenttime = datetime.now()
+                appointment.mechcomment = request.POST['comment']
+                messages.success(request, "Comment posted!")
+            else:
+                messages.error(request, "Error. You are not this appointments user or mech!")
+        appointment.save()
     return redirect('/agenda')
 
 def deleteAppointment(request, id):

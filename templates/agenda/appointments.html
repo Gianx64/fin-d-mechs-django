@@ -10,16 +10,14 @@
             </button>
         </div>
         {% endfor %}
-        <div class="card">
+        <div class="card mt-4">
             <div class="card-header">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div class="float-left">
                         <h4><i class="fab fa-laravel text-info"></i>Appointment List</h4>
                     </div>
                     {% if user.mech == False %}
-                        <div class="btn btn-sm btn-info">
-                            <a href="/agenda/create">Add Appointment</a>
-                        </div>
+                        <button type="button" class="btn btn-primary" onclick="location.href='/agenda/create'">Add Appointment</button>
                     {% endif %}
                 </div>
             </div>
@@ -49,8 +47,8 @@
                                         <td>{{ appointment.car_model }}</td>
                                         <td>{{ appointment.mech }}</td>
                                         <td>{% if appointment.completed %}Completed{% elif appointment.canceled %}Canceled{% elif appointment.confirmed %}Confirmed{% else %}Not Confirmed{% endif %}</td>
-                                        <td width="90">
-                                            <a class="dropdown-item" href="/agenda/{{appointment.id}}"><i class="fa fa-file-text"></i>Show</a>
+                                        <td width="70">
+                                            <button type="button" class="btn btn-primary" onclick="location.href='/agenda/{{appointment.id}}'">Show</button>
                                         </td>
                                     </tr>
                                 {% endfor %}

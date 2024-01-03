@@ -1,7 +1,7 @@
 {% extends "app.html" %}
 {% block title %} Sign In {% endblock %}
 {% block content %}
-    <div class="container">
+    <div class="container mt-4">
         {% for message in messages %}
         <div>
             <strong>Message:</strong> {{ message }}
@@ -35,7 +35,7 @@
             <br>
             <div>
                 <div>
-                    <button type="submit">Sign In</button>
+                    <button type="submit" class="btn btn-primary">Sign In</button>
                 </div>
             </div>
         </form>
