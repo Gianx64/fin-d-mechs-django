@@ -54,15 +54,17 @@
                     <input id="password-confirm" name="password-confirm" type="password" required>
                 </div>
             </div>
-            <br>
-            <div>
+            {% if mech_verified == False %}
+                <br>
                 <div>
                     <div>
-                        <input id="mech" name="mech" type="checkbox" {% if user.mech %} checked="checked" {% endif %}>
-                        <label for="mech">Are you a Mechanic?</label>
+                        <div>
+                            <input id="mech" name="mech" type="checkbox" {% if user.mech %} checked="checked" {% endif %}>
+                            <label for="mech">Are you a Mechanic?</label>
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endif %}
             <br>
             <div>
                 <div>

@@ -28,8 +28,9 @@ class Appointment(models.Model):
 
 class Workshop(models.Model):
     mech = models.EmailField()
+    name = models.CharField(max_length=128)
     city = models.CharField(max_length=128)
     address = models.CharField(max_length=150)
-    description = models.CharField(max_length=256)
     open = models.TimeField()   #opening time
     close = models.TimeField()  #closing time
+    description = models.CharField(max_length=256)

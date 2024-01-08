@@ -17,7 +17,8 @@
                         <h4><i class="fab fa-laravel text-info"></i>Appointment List</h4>
                     </div>
                     {% if user.mech == False %}
-                        <button type="button" class="btn btn-primary" onclick="location.href='/agenda/create'">Add Appointment</button>
+                        <button type="button" class="btn btn-primary" onclick="location.href='/agenda/create?service=None'">Workshop Appointment</button>
+                        <button type="button" class="btn btn-primary" onclick="location.href='/agenda/create?service=False'">Home Appointment</button>
                     {% endif %}
                 </div>
             </div>

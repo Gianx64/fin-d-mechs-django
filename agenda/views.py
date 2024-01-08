@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import Appointment
+from .models import Appointment, Workshop
 from authmod.models import User
 from datetime import datetime, timedelta
 
@@ -25,14 +25,13 @@ def showAppointment(request, id):
         data = Appointment.objects.all().filter(mech = request.user, date = appointment.date)
     else:
         data = Appointment.objects.all().filter(user = request.user, mech = appointment.mech)
-    return render(request, 'agenda/showappointment.html', {'appointment' : appointment, 'appointments' : data, 'confirmable': confirmable, 'commentable': commentable})
+    return render(request, 'agenda/appointmentshow.html', {'appointment' : appointment, 'appointments' : data, 'confirmable': confirmable, 'commentable': commentable})
 
 def createAppointment(request):
     tomorrow = datetime.now() + timedelta(days=1)
     minDate = tomorrow.strftime('%Y-%m-%d')
     deltatime = tomorrow + timedelta(days=21)
     maxDate = deltatime.strftime('%Y-%m-%d')
-    mechs = User.objects.all().filter(mech_verified = True)
 
     if request.method == 'POST':
         if request.POST['date'] >= minDate and request.POST['date'] <= maxDate:
@@ -46,6 +45,7 @@ def createAppointment(request):
                     car_brand = request.POST['car_brand'],
                     car_model = request.POST['car_model'],
                     description = request.POST['description'],
+                    service = request.POST['service'],
                     mech = request.POST['mech'],
                 )
                 messages.success(request, "Appointment Saved!")
@@ -54,8 +54,15 @@ def createAppointment(request):
                 messages.success(request, "You already made an appointment for this day! You can cancel said appointment to make another one.")
         else:
             messages.success(request, "The time period is from tomorrow to the next three weeks!")
-
-    return render(request, 'agenda/createappointment.html', {'minDate': minDate, 'maxDate': maxDate, 'mechs': mechs})
+    elif request.method == 'GET':
+        if request.GET['service'] == 'None':
+            #workshops = Workshop.objects.all().filter(city = request.user.city)
+            workshops = Workshop.objects.all()
+            return render(request, 'agenda/appointmentworkshop.html', {'minDate': minDate, 'maxDate': maxDate, 'workshops': workshops})
+        else:
+            mechs = User.objects.all().filter(mech_verified = True, city = request.user.city)
+            #mechs = User.objects.all().filter(mech_verified = True)
+            return render(request, 'agenda/appointmentcreate.html', {'minDate': minDate, 'maxDate': maxDate, 'mechs': mechs})
 
 def updateAppointment(request, id):
     if request.method == 'POST':
