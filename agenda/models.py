@@ -25,12 +25,3 @@ class Appointment(models.Model):
     mechcommenttime = models.DateTimeField(default=None, blank=True, null=True)
     mechcomment = models.CharField(max_length=128, default=None, blank=True, null=True)   #response for comment of appointment
     #status = models.PositiveSmallIntegerField(default=0) #0 = Submitted, 1 = Confirmed, 2 = Canceled, 3 = Completed
-
-class Workshop(models.Model):
-    mech = models.EmailField()
-    name = models.CharField(max_length=128)
-    city = models.CharField(max_length=128)
-    address = models.CharField(max_length=150)
-    open = models.TimeField()   #opening time
-    close = models.TimeField()  #closing time
-    description = models.CharField(max_length=256)

@@ -40,6 +40,11 @@
                     <li class="navbar-item">
                         <a class="nav-link" href="/agenda">Agenda</a>
                     </li>
+                    {% if user.mech_verified %}
+                    <li class="navbar-item">
+                        <a class="nav-link" href="/workshop">Workshop</a>
+                    </li>
+                    {% endif %}
                     <li class="navbar-item">
                         <a class="nav-link" href="/profile">{{user.first_name}} {{user.last_name}}</a>
                     </li>

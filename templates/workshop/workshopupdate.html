@@ -10,24 +10,24 @@
             </button>
         </div>
         {% endfor %}
-        <form action="/workshop/update" method="POST">
+        <form action="/workshop/update/{{workshop.id}}" method="POST">
             {% csrf_token %}
             <div>
                 <label for="name">Name:</label>
                 <div>
-                    <input id="name" name="name" type="text" value="{{ workshop.name }}" required>
+                    <input id="name" name="name" type="text" value="{{ workshop.name }}" required autofocus>
                 </div>
             </div>
             <div>
                 <label for="city">City:</label>
                 <div>
-                    <input id="city" name="city" type="text" value="{{ workshop.city }}" required autocomplete="city" autofocus>
+                    <input id="city" name="city" type="text" value="{{ workshop.city }}" required autocomplete="city">
                 </div>
             </div>
             <div>
                 <label for="address">Address:</label>
                 <div>
-                    <input id="address" name="address" type="text" value="{{ workshop.address }}" required autocomplete="address" autofocus>
+                    <input id="address" name="address" type="text" value="{{ workshop.address }}" required autocomplete="address">
                 </div>
             </div>
             <div>

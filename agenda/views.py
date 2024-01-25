@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import Appointment, Workshop
+from .models import Appointment
+from workshop.models import Workshop
 from authmod.models import User
 from datetime import datetime, timedelta
 
@@ -51,9 +52,9 @@ def createAppointment(request):
                 messages.success(request, "Appointment Saved!")
                 return redirect('/agenda')
             else:
-                messages.success(request, "You already made an appointment for this day! You can cancel said appointment to make another one.")
+                messages.error(request, "You already made an appointment for this day! You can cancel said appointment to make another one.")
         else:
-            messages.success(request, "The time period is from tomorrow to the next three weeks!")
+            messages.error(request, "The time period is from tomorrow to the next three weeks!")
     elif request.method == 'GET':
         if request.GET['service'] == 'None':
             #workshops = Workshop.objects.all().filter(city = request.user.city)
