@@ -1,11 +1,13 @@
 ## TODO:
-- App Workshop
+- Implementar correos
+- middleware (permisos) para apps
+- arreglar navbar sizing
+- Enbellecer Workshop
+- workshop comments
 - Opciones de servicio
 1. Atención en taller
 2. Adención a domicilio
 3. Pickup
-- Implementar correos
-- user & mech comments
 - Background en otras apps
 - Random mech
 - Agenda en el home page
