@@ -6,9 +6,9 @@ from authmod.models import User
 # Create your views here.
 def home(request):
     if request.user.is_authenticated:
-        return render(request, 'home.html', {'name': request.user.first_name})
+        return render(request, 'es/home.html', {'name': request.user.first_name})
     else:
-        return render(request, 'home.html')
+        return render(request, 'es/home.html')
 
 def profile(request):
     data = User.objects.get(email = request.user)
@@ -26,7 +26,7 @@ def profile(request):
             data.save()
             messages.success(request, "Your account has been successfully updated!")
             return redirect(home)
-    return render(request, 'auth/profile.html', {'user': data})
+    return render(request, 'es/auth/profile.html', {'user': data})
 
 def signup(request):
     if request.method == "POST":
@@ -44,19 +44,17 @@ def signup(request):
             data.save()
             messages.success(request, "Your account has been successfully created!")
             return signin(request)
-    return render(request, 'auth/signup.html')
+    return render(request, 'es/auth/signup.html')
 
 def signin(request):
     if request.method == "POST":
-        #TODO: login by email instead of username
-        #user = authenticate(User.objects.get(email=request.POST['email'].lower()).username, password = request.POST['password'])
         user = authenticate(email = request.POST['email'], password = request.POST['password'])
         if user is not None:
             login(request, user)
             return redirect(home)
         else:
             messages.error(request, "Bad credentials.")
-    return render(request, 'auth/signin.html')
+    return render(request, 'es/auth/signin.html')
 
 def signout(request):
     logout(request)

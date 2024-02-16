@@ -1,0 +1,55 @@
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelModalLabel">Cancel Appointment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/agenda/update/{{appointment.id}}" method="POST">
+                {% csrf_token %}
+                <input id="action" name="action" type="number" value="2" hidden>
+                <div class="modal-body">
+                    <div>
+                        <label for="reason">Motivo del cancelamiento:</label>
+                        <div>
+                            <textarea id="reason" name="reason" required autofocus>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button onclick="return confirm('¿Cancelar cita id {{appointment.id}} por el motivo especificado? \n¡Las citas canceladas no pueden ser recuperadas!')"
+                    type="submit" class="btn btn-danger">Cancelar cita</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commentModalLabel">Comentar cita</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/agenda/update/{{appointment.id}}" method="POST">
+                {% csrf_token %}
+                <input id="action" name="action" type="number" value="4" hidden>
+                <div class="modal-body">
+                    <div>
+                        <label for="comment">Retroalimentación:</label>
+                        <div>
+                            <textarea id="comment" name="comment" type="text" required autofocus>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button onclick="return confirm('¿Realmente quiere publicar este comentario?\n¡No podrá ser editado ni eliminado!')"
+                    type="submit" class="btn btn-primary">Añadir comentario</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,217 @@
+{% extends "es/app.html" %}
+{% block title %} Mostrar Cita {% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-auto">
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h2>Detalles de la cita:</h2>
+                    </div>
+                    <div class="card-body">
+                        <table>
+                            <tr>
+                                <td>Fecha:</td>
+                                <td>{{ appointment.date }}</td>
+                            </tr>
+                            <tr>
+                                <td>Hora:</td>
+                                <td>{{ appointment.time }}</td>
+                            </tr>
+                            <tr>
+                                <td>Comuna:</td>
+                                <td>{{ appointment.city }}</td>
+                            </tr>
+                            <tr>
+                                <td>Dirección:</td>
+                                <td>{{ appointment.address }}</td>
+                            </tr>
+                            <tr>
+                                <td>Marca de vehículo:</td>
+                                <td>{{ appointment.car_brand }}</td>
+                            </tr>
+                            <tr>
+                                <td>Modelo de vehículo:</td>
+                                <td>{{ appointment.car_model }}</td>
+                            </tr>
+                            <tr>
+                                <td>Descripción:</td>
+                                <td>{{ appointment.description }}</td>
+                            </tr>
+                            <tr>
+                                <td>Mecánico:</td>
+                                <td>{{ appointment.mech }}</td>
+                            </tr>
+                            <tr>
+                                <td>Estado:</td>
+                                <td>{% if appointment.completed %}Completado{% elif appointment.canceled %}Cancelado{% elif appointment.confirmed %}Confirmado{% else %}No Confirmado{% endif %}</td>
+                            </tr>
+                        </table>
+                        <!--div class="row">
+                            <div class="col flex">
+                                <label for="date">Fecha:</label><br>
+                                <label for="time">Hora:</label><br>
+                                <label for="city">Comuna:</label><br>
+                                <label for="address">Dirección:</label><br>
+                                <label for="car_brand">Marca de vehículo:</label><br>
+                                <label for="car_model">Modelo de vehículo:</label><br>
+                                <label for="description">Descripción:</label><br>
+                                <label for="mech">Mecánico:</label><br>
+                                <label for="status">Estado:</label>
+                            </div>
+                            <div class="col">
+                                {{ appointment.date }}<br>
+                                {{ appointment.time }}<br>
+                                {{ appointment.city }}<br>
+                                {{ appointment.address }}<br>
+                                {{ appointment.car_brand }}<br>
+                                {{ appointment.car_model }}<br>
+                                {{ appointment.description }}<br>
+                                {{ appointment.mech }}<br>
+                                {% if appointment.completed %}Completado{% elif appointment.canceled %}Cancelado{% elif appointment.confirmed %}Confirmado{% else %}No Confirmado{% endif %}
+                            </div>
+                        </div-->
+                    </div>
+                    <div class="card-footer">
+                        <div class="col">
+                            <button type="button" class="btn btn-primary" onclick="location.href='/agenda'">Volver</button>
+                        </div>
+                        <div class="row">
+                            {% include 'es/agenda/appointmentmodals.html' %}
+                            {% if user.mech_verified %}
+                                {% if appointment.canceled == False and appointment.confirmed == False %}
+                                    <div class="col">
+                                        <form action="/agenda/update/{{appointment.id}}" method="POST">
+                                            {% csrf_token %}
+                                            <input id="user" name="user" type="email" value="{{user.email}}" hidden>
+                                            <input id="action" name="action" type="number" value="1" hidden>
+                                            <button onclick="return confirm('¿Realmente quiere marcar esta cita como confirmado?\n¡Esto no se puede deshacer!')"
+                                            type="submit" class="btn btn-success">Confirmar Cita</button>
+                                        </form>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                            {% if appointment.canceled == False and appointment.completed == False %}
+                                <div class="col">
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">Cancelar Cita</button>
+                                </div>
+                            {% endif %}
+                            {% if confirmable %}
+                                {% if appointment.canceled == False and appointment.confirmed == True and appointment.completed == False %}
+                                    <div class="col">
+                                        <form action="/agenda/update/{{appointment.id}}" method="POST">
+                                            {% csrf_token %}
+                                            <input id="user" name="user" type="email" value="{{user.email}}" hidden>
+                                            <input id="action" name="action" type="number" value="3" hidden>
+                                            <button onclick="return confirm('¿Realmente quiere marcar esta cita como completada?\n¡Esto no se puede deshacer!')"
+                                            type="submit" class="btn btn-success">Marcar como Completado</button>
+                                        </form>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <div>
+                            {% if user.mech_verified %}
+                                <h2>Sus citas por el día ({{ appointment.date }}):</h2><br>
+                            {% else %}
+                                <h2>Historial de citas con el mecánico ({{ appointment.mech }}):</h2><br>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-sm">
+                            <thead class="thead">
+                                <tr>
+                                    <td>ID</td> 
+                                    <th>Día</th>
+                                    <th>Hora</th>
+                                    <th>Comuna</th>
+                                    <th>Dirección</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if appointments %}
+                                    {% for appointment in appointments %}
+                                        <tr>
+                                            <td><a href="/agenda/{{appointment.id}}">{{ appointment.id }}</a></td>
+                                            <td>{{ appointment.date }}</td>
+                                            <td>{{ appointment.time }}</td>
+                                            <td>{{ appointment.city }}</td>
+                                            <td>{{ appointment.address }}</td>
+                                            <td>{% if appointment.completed %}Completado{% elif appointment.canceled %}Cancelado{% elif appointment.confirmed %}Confirmado{% else %}No Confirmado{% endif %}</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr><td class="text-center" colspan="100%">No se han encontrado datos.</td></tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if appointment.confirmed %}
+            <div class="row">
+                <div class="col">
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h2>Línea de tiempo de la cita:</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="confirmtime">Tiempo de confirmación:</label><br>
+                                    {% if appointment.canceled %}
+                                        <label for="canceledby">Cancelado por:</label><br>
+                                        <label for="canceltime">Timepo de cancelación:</label><br>
+                                    {% endif %}
+                                    {% if appointment.completed %}
+                                        <label for="completedtime">Tiempo de completación:</label><br>
+                                    {% endif %}
+                                    {% if appointment.usercomment %}
+                                        <br><label for="usercommenttime">Tiempo de comentario del usuario:</label><br>
+                                        <label for="usercomment">Comentario del usuario:</label><br>
+                                    {% endif %}
+                                    {% if appointment.mechcomment %}
+                                        <br><label for="mechcommenttime">Tiempo de comentario del mecánico:</label><br>
+                                        <label for="mechcomment">Comentario del mecánico:</label><br>
+                                    {% endif %}
+                                </div>
+                                <div class="col">
+                                    {{ appointment.confirmtime }}<br>
+                                    {% if appointment.canceled %}
+                                        {{ appointment.canceledby }}<br>
+                                        {{ appointment.canceltime }}<br>
+                                    {% endif %}
+                                    {% if appointment.completed %}
+                                        {{ appointment.completedtime }}<br>
+                                    {% endif %}
+                                    {% if appointment.usercomment %}
+                                        <br>{{ appointment.usercommenttime }}<br>
+                                        {{ appointment.usercomment }}<br>
+                                    {% endif %}
+                                    {% if appointment.mechcomment %}
+                                        <br>{{ appointment.mechcommenttime }}<br>
+                                        {{ appointment.mechcomment }}<br>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% if commentable %}
+                            <div class="card-footer">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#commentModal">Añadir comentario</button>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "es/app.html" %}
+{% block title %} Mostrar Taller {% endblock %}
+{% block content %}
+    <div class="container mt-4">
+        <div>
+            <label for="name">Nombre:</label>
+            <div>
+                <input id="name" name="name" type="text" value="{{ workshop.name }}" readonly>
+            </div>
+        </div>
+        <div>
+            <label for="city">Comuna:</label>
+            <div>
+                <input id="city" name="city" type="text" value="{{ workshop.city }}" readonly>
+            </div>
+        </div>
+        <div>
+            <label for="address">Dirección:</label>
+            <div>
+                <input id="address" name="address" type="text" value="{{ workshop.address }}" readonly>
+            </div>
+        </div>
+        <div>
+            <label for="open">Hora de apertura:</label>
+            <div>
+                <input id="open" name="open" type="text" value="{{ workshop.open }}" readonly>
+            </div>
+        </div>
+        <div>
+            <label for="close">Hora de cierre:</label>
+            <div>
+                <input id="close" name="close" type="text" value="{{ workshop.close }}" readonly>
+            </div>
+        </div>
+        <div>
+            <label for="description">Descripción (Información general, marcas que se trabajan, etc.):</label>
+            <div>
+                <input id="description" name="description" type="text" value="{{ workshop.description }}" readonly>
+            </div>
+        </div>
+        <br>
+        <div>
+            <div>
+                <form action="/workshop/delete/{{workshop.id}}" method="POST">
+                    {% csrf_token %}
+                    <button onclick="return confirm('Are you sure you want to delete this workshop?\nThis cannot be undone!')"
+                    type="submit" class="btn btn-danger">Delete Workshop</button>
+                </form>
+                <button type="button" class="btn btn-primary" onclick="location.href='/workshop/update/{{workshop.id}}'">Update Workshop</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

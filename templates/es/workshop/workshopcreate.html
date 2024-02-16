@@ -1,0 +1,59 @@
+{% extends "es/app.html" %}
+{% block title %} Registrar Taller {% endblock %}
+{% block content %}
+    <div class="container mt-4">
+        {% for message in messages %}
+        <div>
+            <strong>Mensaje:</strong> {{ message }}
+            <button type="button" aria-label="Close" class="Close" data-dismiss="alert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        <form action="/workshop/create" method="POST">
+            {% csrf_token %}
+            <div>
+                <label for="name">Nombre:</label>
+                <div>
+                    <input id="name" name="name" type="text" required>
+                </div>
+            </div>
+            <div>
+                <label for="city">Comuna:</label>
+                <div>
+                    <input id="city" name="city" type="text" required autocomplete="city" autofocus>
+                </div>
+            </div>
+            <div>
+                <label for="address">Dirección:</label>
+                <div>
+                    <input id="address" name="address" type="text" required autocomplete="address" autofocus>
+                </div>
+            </div>
+            <div>
+                <label for="open">Hora de apertura:</label>
+                <div>
+                    <input id="open" name="open" type="time" required>
+                </div>
+            </div>
+            <div>
+                <label for="close">Hora de cierre:</label>
+                <div>
+                    <input id="close" name="close" type="time" required>
+                </div>
+            </div>
+            <div>
+                <label for="description">Descripción (Información general, marcas que se trabajan, etc.):</label>
+                <div>
+                    <textarea id="description" name="description" required>
+                </div>
+            </div>
+            <br>
+            <div>
+                <div>
+                    <button type="submit" class="btn btn-primary">Registrar Taller</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

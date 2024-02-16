@@ -15,7 +15,7 @@ def workshopList(request):
 
 def showWorkshop(request, id):
     workshop = Workshop.objects.get(id = id)
-    return render(request, 'workshop/workshopshow.html', {'workshop' : workshop})
+    return render(request, 'es/workshop/workshopshow.html', {'workshop' : workshop})
 
 def createWorkshop(request):
     if request.method == 'POST':
@@ -36,7 +36,7 @@ def createWorkshop(request):
                 messages.error(request, "This name is already taken by another workshop!")
         else:
             messages.error(request, "This address is already taken by another workshop!")
-    return render(request, 'workshop/workshopcreate.html')
+    return render(request, 'es/workshop/workshopcreate.html')
 
 def updateWorkshop(request, id):
     workshop = Workshop.objects.get(id = id)
@@ -52,7 +52,7 @@ def updateWorkshop(request, id):
         return redirect('/workshop')
     workshop.open = workshop.open.strftime("%H:%M")
     workshop.close = workshop.close.strftime("%H:%M")
-    return render(request, 'workshop/workshopupdate.html', {'workshop' : workshop})
+    return render(request, 'es/workshop/workshopupdate.html', {'workshop' : workshop})
 
 def deleteWorkshop(request, id):
     workshop = Workshop.objects.get(id = id)

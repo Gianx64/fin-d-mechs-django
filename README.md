@@ -1,4 +1,5 @@
 ## TODO:
+- selección de idioma
 - Implementar correos
 - middleware (permisos) para apps
 - arreglar navbar sizing

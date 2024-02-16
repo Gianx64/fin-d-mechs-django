@@ -11,7 +11,7 @@ def appointmentList(request):
         data = Appointment.objects.all().filter(mech = request.user).order_by('-id')
     else:
         data = Appointment.objects.all().filter(user = request.user).order_by('-id')
-    return render(request, 'agenda/appointments.html', {'appointments' : data})
+    return render(request, 'es/agenda/appointments.html', {'appointments' : data})
 
 def showAppointment(request, id):
     appointment = Appointment.objects.get(id = id)
@@ -26,7 +26,7 @@ def showAppointment(request, id):
         data = Appointment.objects.all().filter(mech = request.user, date = appointment.date)
     else:
         data = Appointment.objects.all().filter(user = request.user, mech = appointment.mech)
-    return render(request, 'agenda/appointmentshow.html', {'appointment' : appointment, 'appointments' : data, 'confirmable': confirmable, 'commentable': commentable})
+    return render(request, 'es/agenda/appointmentshow.html', {'appointment' : appointment, 'appointments' : data, 'confirmable': confirmable, 'commentable': commentable})
 
 def createAppointment(request):
     tomorrow = datetime.now() + timedelta(days=1)
@@ -59,11 +59,11 @@ def createAppointment(request):
         if request.GET['service'] == 'None':
             #workshops = Workshop.objects.all().filter(city = request.user.city)
             workshops = Workshop.objects.all()
-            return render(request, 'agenda/appointmentworkshop.html', {'minDate': minDate, 'maxDate': maxDate, 'workshops': workshops})
+            return render(request, 'es/agenda/appointmentworkshop.html', {'minDate': minDate, 'maxDate': maxDate, 'workshops': workshops})
         else:
             mechs = User.objects.all().filter(mech_verified = True, city = request.user.city)
             #mechs = User.objects.all().filter(mech_verified = True)
-            return render(request, 'agenda/appointmentcreate.html', {'minDate': minDate, 'maxDate': maxDate, 'mechs': mechs})
+            return render(request, 'es/agenda/appointmentcreate.html', {'minDate': minDate, 'maxDate': maxDate, 'mechs': mechs})
 
 def updateAppointment(request, id):
     if request.method == 'POST':

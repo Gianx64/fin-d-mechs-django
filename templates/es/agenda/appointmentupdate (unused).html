@@ -1,0 +1,52 @@
+{% extends "es/app.html" %}
+{% block title %} Edit Appointment {% endblock %}
+{% block content %}
+    <div class="container mt-4">
+        <form action="/agenda/update" method="POST">
+            {% csrf_token %}
+            <input id="user" name="user" type="email" value="{{user.email}}" hidden>
+            <div>
+                <label for="mech">Mecánico:</label>
+                <div>
+                    <input id="mech" name="mech" type="email" value="{{ appointment.mech }}" required autocomplete="email" autofocus>
+                </div>
+            </div>
+            <div>
+                <label for="date">Fecha:</label>
+                <div>
+                    <input id="date" name="date" type="date" value="{{ appointment.date }}" required>
+                </div>
+            </div>
+            <div>
+                <label for="time">Hora:</label>
+                <div>
+                    <input id="time" name="time" type="time" value="{{ appointment.time }}" required>
+                </div>
+            </div>
+            <div>
+                <label for="car_brand">Marca de vehículo:</label>
+                <div>
+                    <input id="car_brand" name="car_brand" type="text" value="{{ appointment.car_brand }}" required autocomplete="car_brand">
+                </div>
+            </div>
+            <div>
+                <label for="car_model">Modelo de vehículo:</label>
+                <div>
+                    <input id="car_model" name="car_model" type="text" value="{{ appointment.car_model }}" required autocomplete="car_model">
+                </div>
+            </div>
+            <div>
+                <label for="description">Descripción (Problema, servicio deseado, etc.):</label>
+                <div>
+                    <textarea id="description" name="description" value="{{ appointment.description }}">
+                </div>
+            </div>
+            <br>
+            <div>
+                <div>
+                    <button type="submit" class="btn btn-primary">Editar cita</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
