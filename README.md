@@ -1,18 +1,3 @@
-## TODO:
-- selección de idioma
-- Implementar correos
-- middleware (permisos) para apps
-- arreglar navbar sizing
-- Enbellecer Workshop
-- workshop comments
-- Opciones de servicio
-1. Atención en taller
-2. Adención a domicilio
-3. Pickup
-- Background en otras apps
-- Random mech
-- Agenda en el home page
-
 Instalar Python + pip
 https://youtu.be/rHux0gMZ3Eg
 
