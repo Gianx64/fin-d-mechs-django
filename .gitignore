@@ -12,4 +12,3 @@
 !/workshop/migrations/__init__.py
 /FinDMechs/__pycache__
 db.sqlite3
-todo.md
