@@ -3,6 +3,8 @@ from django.contrib import messages
 from .models import Workshop
 
 # Create your views here.
+#TODO: Beautify templates
+#TODO: Add workshop reviews
 def workshopList(request):
     #if request.user.isAdmin: return render(request, 'workshop/workshops.html', {'workshops' : data})
     data = Workshop.objects.filter(owner = request.user).first()

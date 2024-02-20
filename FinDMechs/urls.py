@@ -19,6 +19,8 @@ from django.urls import path, include, re_path
 from django.views.static import serve
 from FinDMechs import settings
 
+#TODO: Add language selection
+#TODO: Middleware (permission) for apps
 urlpatterns = [
     path('', include('authmod.urls')),
     path('agenda/', include('agenda.urls')),

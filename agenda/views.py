@@ -6,6 +6,8 @@ from authmod.models import User
 from datetime import datetime, timedelta
 
 # Create your views here.
+#TODO: Random mech for appointments
+#TODO: Mail implementation
 def appointmentList(request):
     if request.user.mech_verified:
         data = Appointment.objects.all().filter(mech = request.user).order_by('-id')

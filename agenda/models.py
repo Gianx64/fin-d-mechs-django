@@ -18,6 +18,8 @@ class Appointment(models.Model):
     canceled = models.BooleanField(default=False)
     canceledby = models.EmailField(default=None, blank=True, null=True)
     canceltime = models.DateTimeField(default=None, blank=True, null=True)
+    cartaken = models.DateTimeField(default=None, blank=True, null=True)
+    cardelivered = models.DateTimeField(default=None, blank=True, null=True)
     completed = models.BooleanField(default=False)
     completedtime = models.DateTimeField(default=None, blank=True, null=True)
     usercommenttime = models.DateTimeField(default=None, blank=True, null=True)

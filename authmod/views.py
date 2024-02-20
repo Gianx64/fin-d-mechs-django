@@ -4,6 +4,7 @@ from django.contrib import messages
 from authmod.models import User
 
 # Create your views here.
+#TODO: Fix navbar sizing
 def home(request):
     if request.user.is_authenticated:
         return render(request, 'es/home.html', {'name': request.user.first_name})
